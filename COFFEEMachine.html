@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <script src="https://kit.fontawesome.com/6cbc1161f0.js" crossorigin="anonymous"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>Кофе машина</title>
+    <style>
+    .big-icon {
+        font-size:2.5rem;
+        padding-left:10px;
+        padding-top:6px;
+      }
+      body {
+        background:url('img/stena.jpg'); background-size: cover;
+          overflow:hidden;
+      }
+      /*.left-block{
+        background:url('img/coffee_background.jpg');
+        background-size:cover;
+      }*/
+      .coffee-btn-group{
+        background:rgb(0,0,0,.5);
+      }
+      .coffee-mark {
+        margin:1rem 0px;
+        border-radius:32px 0 0 32px;
+        border:2px solid black;
+        box-shadow:0 0 5px 5px rgb(255,255,255,.5);
+      }
+      .btn-getCoffee{
+        width:64px;
+        height:64px;
+        background:#4d4f4fd9;
+        border:2px solid #323233e5;
+        cursor:pointer;
+        box-shadow:0 0 5px 5px rgb(255,255,255,.5);
+      }
+      .btn-getCoffee:hover{
+        background:#bbbcbdfd;
+      }
+      .btn-getCoffee:active{
+        box-shadow:inset 0 0 10px 5px rgb(0,0,0,.5);
+      }
+      .coffee-mark>span{
+        color:white;
+        font-size:26px;
+        padding:10px 0 10px 1rem;
+      }
+      #display{
+        font-family:'lucida console',serif;
+        background:#62b8f5fc;
+        color:white;
+        padding:1rem;
+        width:90%;
+        height:9rem;
+        border:5px groove black;
+        text-align:center;
+        margin:auto;
+        margin-top:2rem;
+      }
+      #changeBox{
+        width:90%;
+        height:13rem;
+        background:rgb(10,10,10,.6);
+        border:3px solid black;
+        position:relative;
+        
+      }
+      [src$='rub.png']{
+        width:65px;
+        height:65px;
+        position:absolute;
+      }
+      [src$='rub.jpg']:hover, [src$='rub.png']:hover{
+        cursor:pointer;
+        filter: contrast(150%);
+      }
+      .progress-bar{
+        transition-property:width;
+        transition-duration:19s;
+      }
+      #lock{
+        width:100%;
+        height:100%;
+        z-index:1;
+        background:rgb(0,0,0,0);
+        position:absolute;
+        top:0px;
+      }
+      #bill_acc{
+        box-shadow:inset 0 0 30px 30px rgb(60, 65, 75);
+      }
+      #pay {
+        width:200px;
+        height:150px;
+      }
+      .row.my-3{
+        background:rgb(0, 0, 0, .3);
+        border:5px groove rgb(0, 0, 0);
+        box-shadow:0 0 5px 5px rgb(0, 0, 0, .3);
+      }
+       #coffee_cup{
+        position:absolute;
+        top:0;
+        left:0;
+      }
+       #coffee_cup:hover{
+        cursor:pointer;
+      }
+    </style>
+  </head>
+  <body>
+    
+    <div class="container my-2">
+      <div class="row my-3">
+        <div class="col-sm-6 left-block">
+          <div class="coffee-btn-group">
+            <div class="row coffee-mark">
+              <div class="rounded-circle btn-getCoffee"  onclick="getCoffee(47,'Капучино')">
+                <i class="fas fa-mug-hot big-icon" style="color:white;"></i>
+              </div>
+              <span>Капучино - 47р.</span>
+            </div>
+            <div class="row coffee-mark">
+              <div class="rounded-circle btn-getCoffee" onclick="getCoffee(52,'Латте')">
+                  <i class="fas fa-mug-hot big-icon" style="color:white;"></i>
+              </div>
+              <span>Латте - 52р.</span>
+            </div>
+            <div class="row coffee-mark">
+              <div class="rounded-circle btn-getCoffee" onclick="getCoffee(44, 'Американо')">
+                  <i class="fas fa-mug-hot big-icon" style="color:white;"></i>
+              </div>
+              <span>Американо - 44р.</span>
+            </div>
+            <div class="row coffee-mark">
+              <div class="rounded-circle btn-getCoffee" onclick="getCoffee(93, 'Гляссе')">
+                  <i class="fas fa-mug-hot big-icon" style="color:white;"></i>
+              </div>
+              <span>Гляссе - 93р.</span>
+            </div>
+            <div class="row coffee-mark">
+              <div class="rounded-circle btn-getCoffee" onclick="getCoffee(45, 'Эспрессо')">
+                  <i class="fas fa-mug-hot big-icon" style="color:white;"></i>
+              </div>
+              <span>Эспрессо - 45р.</span>
+            </div>
+            <div style="position:relative; height:320px" class="w-100"> 
+                <img src="img/emptycup.jpg" id="coffee_cup" width="75%"  alt="Кружка">
+              </div>
+          </div>
+        </div>
+        <div class="col-sm-6" >
+          <div class="row">
+            <div class="col-sm-6 text-center">
+              <div id="display">
+                <p>Закажите кофе</p>
+                <p>Ваш баланс: <span id="balance">0</span> руб.</p>
+                <div class="progress" hidden>
+                  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+                </div>
+              </div>
+              <button class="btn btn-warning btn-lg my-3" style="z-index:3; position:relative;box-shadow:inset 0 0 10px 5px #f5aa14;" onclick="getChange(money.value)">Получить сдачу</button>
+            </div>
+            <div class="col-sm-6 text-center">
+              <input id="money" type="hidden">
+              <img class="my-3" id="bill_acc" src="img/bill_acc.png" alt="">
+              <div class="m-auto " id="changeBox"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <img src="img/50rub.jpg" alt="50">
+      <img src="img/100rub.jpg" alt="100">
+      <img src="img/500rub.jpg" alt="500">
+    </div>
+    <div id="lock" hidden></div>
+    <script>
+      
+      let coffeeCup = document.getElementById("coffee_cup");
+      
+      coffeeCup.addEventListener("click", function(){
+        if(coffeeCup.src == "http://nvolzhova.beget.tech/img/fillcup.jpg"){
+          drinking.play();
+         coffeeCup.src = "img/emptycup.jpg";
+        }
+      });
+      let drinking = new Audio('../audio/drinkingcut.mp3');
+      let coffeecook = new Audio('../audio/coffeecook.mp3');
+      let getChange_audio = new Audio('../audio/getChange_audio.mp3');
+      let getCoffee_audio = new Audio('../audio/getCoffee_audio.mp3');
+      let money = document.getElementById("money");
+      let display = document.getElementById("display");
+      let bills = document.querySelectorAll("[src$='rub.jpg']");
+      let progreeBar = document.querySelector('.progress-bar');
+      progreeBar.addEventListener('transitionend', function() {
+        display.firstElementChild.innerText = "Кофе "+name+" готов";
+        
+        coffeeCup.src = "img/fillcup.jpg";
+        
+        this.parentElement.hidden = true;
+        lock.hidden=true;
+      });
+      function getCoffee(price,name){
+        if (money.value>=price){
+          money.value = money.value - price;
+          getCoffee_audio.play();
+          coffeecook.play();
+          lock.hidden=false;
+          progreeBar.parentElement.hidden = false;
+          progreeBar.style.width='0%';
+          setTimeout(()=>{progreeBar.style.width='100%';}, 100);
+          
+          coffeeCup.src = "img/depo.gif";
+          
+          display.firstElementChild.innerText = 'Ожидайте...';
+          balance.innerText = money.value;
+        }
+        else{
+          display.firstElementChild.innerText = "Денег нет, но вы держитесь там.";
+        }
+      }
+      let firstClick = [];
+      for (let i=0; i<bills.length; i++){
+        bills[i].addEventListener('mousedown',function(){
+          document.ondragstart = function(){return false;}
+          let bill = this; // this == bills[i]
+          bill.style.position = "absolute";
+          bill.style.transform= "rotate(90deg)";
+          let rubX = event.pageX-bill.getBoundingClientRect().left + (bill.offsetWidth/2 - bill.getBoundingClientRect().width/2);
+          let rubY = event.pageY-bill.getBoundingClientRect().top - (bill.getBoundingClientRect().height/2 - bill.offsetHeight/2);
+          function move(){
+            if (firstClick[i]==undefined){
+              let X0=bill.offsetLeft - ( bill.getBoundingClientRect().right- (event.pageY - bill.offsetTop) - event.pageX )+"px";
+              let Y0=bill.offsetTop + (event.pageY - bill.getBoundingClientRect().top - (event.pageX - bill.offsetLeft) ) +"px";
+              bill.style.left=X0;
+              bill.style.top= Y0;
+              rubX= event.pageX-bill.getBoundingClientRect().left + (bill.offsetWidth/2 - bill.getBoundingClientRect().width/2);
+              rubY= event.pageY-bill.getBoundingClientRect().top - (bill.getBoundingClientRect().height/2 - bill.offsetHeight/2);
+              firstClick[i] = true;
+            }else {
+              bill.style.left= event.pageX-rubX+"px";
+              bill.style.top = event.pageY-rubY+"px";
+            }
+          }
+          move();
+          document.addEventListener('mousemove', move);
+          document.addEventListener('mouseup', function(){
+            document.removeEventListener('mousemove',move);
+            let bill_acc_left  = bill_acc.getBoundingClientRect().left;
+            let bill_acc_right = bill_acc.getBoundingClientRect().right;
+            let bill_acc_top   = bill_acc.getBoundingClientRect().top;
+            let bill_acc_bottom= bill_acc.getBoundingClientRect().bottom;
+            let bill_acc_height= bill_acc.getBoundingClientRect().height;
+            let bill_left  = bill.getBoundingClientRect().left;
+            let bill_right = bill.getBoundingClientRect().right;
+            let bill_top   = bill.getBoundingClientRect().top;
+            
+            if (bill_acc_left<bill_left && bill_acc_right>bill_right && bill_acc_top<bill_top && bill_acc_bottom-(2*(bill_acc_height/3))>bill_top){
+              bill.hidden = true;
+              money.value = +money.value + (+bill.alt);
+              balance.innerText = money.value;
+            }
+            
+          })
+        });
+      }
+      
+      
+      function getChange(num){
+        money.value = 0;
+        balance.innerText = 0;
+        let img  = document.createElement('img');
+        img.setAttribute("onclick","this.hidden=true");
+        img.style.top = getRandom(0,changeBox.getBoundingClientRect().height-65)+'px';
+        img.style.left= getRandom(0,changeBox.getBoundingClientRect().width-65)+'px';
+        if (num>=10) {
+          img.src = `img/10rub.png`
+          getChange(num-10);
+        }
+        else if (num>=5) {
+          img.src = `img/5rub.png`
+          getChange(num-5);
+        }
+        else if (num>=2) {
+          img.src = `img/2rub.png`
+          getChange(num-2);
+        }
+        else if (num>=1) {
+          img.src = `img/1rub.png`
+          getChange(num-1);
+        }
+        else {
+          getChange_audio.play();
+          return;
+        }
+        changeBox.append(img);
+      }
+      
+      function getRandom(min, max){
+        return Math.random()*(max-min)+min
+      }
+    </script>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  </body>
+</html>
